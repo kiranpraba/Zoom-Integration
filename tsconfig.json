@@ -1,0 +1,7 @@
+{
+    "compilerOptions": {
+      /* ... other options ... */
+    },
+    "include": ["src/**/*.ts"] // Replace "src" with your source directory
+  }
+  
