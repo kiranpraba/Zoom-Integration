@@ -246,7 +246,8 @@ app.get("/auth/zoom/callback", async (req, res) => {
     const refreshToken = response.data.refresh_token;
     console.log(response);
     res.redirect(
-      `http://localhost:3000/refrestoken?access_token=${accessToken}&refresh_Token=${refreshToken}`
+      `http://localhost:3000/?access_token=${accessToken}&refresh_Token=${refreshToken}`
+      // `http://localhost:3000/refrestoken?access_token=${accessToken}&refresh_Token=${refreshToken}`
     );
     //res.send(`Access Token: ${accessToken}`);
   } catch (error) {
