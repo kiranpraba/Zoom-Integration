@@ -71,6 +71,19 @@ app.post("/api/create-meeting", async (req, res) => {
   console.log(req.body);
   if (accessToken && topic && start_time && duration) {
     try {
+      // Meeting settings
+      const settings = {
+        host_video: true,
+        participant_video: true,        
+        join_before_host: true, // Allow participants to join before host
+        mute_upon_entry: true,
+        approval_type: 2, // 0 - Automatically approve, 1 - Manually approve, 2 - No registration required
+        audio: "both", // 'both', 'telephony', 'voip'
+        auto_recording: "local", // 'local', 'cloud', 'none'
+        // alternative_hosts: "david@intoaec.com", // Comma separated emails of alternative hosts
+        waiting_room: true, // Enable waiting room,
+      };
+
       const response = await axios.post(
         create_Meeting_Url,
         {
@@ -78,11 +91,8 @@ app.post("/api/create-meeting", async (req, res) => {
           start_time,
           duration,
           agenda,
-          settings: {
-            approval_type: 0,
-            registration_type: 1,
-            // alternative_hosts:'gunal@intoaec.com',
-            meeting_invitees: participantEmails.map((email) => ({ email })),
+          settings: {            
+            ...settings
           },
         },
         {
@@ -256,7 +266,7 @@ app.get("/auth/zoom/callback", async (req, res) => {
 });
 app.get("/api/refresh-token", async (req, res) => {
   const refreshToken = req.headers.authorization?.split(" ")[1];
-  const response = await refreshOauthToken({old_refresh_token:refreshToken});
+  const response = await refreshOauthToken({ old_refresh_token: refreshToken });
   console.log("refreshtoken " + response);
   res.status(200).json(response);
 });
